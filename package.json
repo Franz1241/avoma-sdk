@@ -1,7 +1,7 @@
 {
   "name": "avoma-sdk",
-  "version": "0.1.0",
-  "description": "Typed TypeScript SDK for the Avoma API.",
+  "version": "0.1.2",
+  "description": "TypeScript SDK client for Avoma (https://www.avoma.com/). Unofficial, use at your own risk. Not affiliated with Avoma.",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -16,6 +16,7 @@
   "license": "MIT",
   "keywords": [
     "avoma",
+    "unofficial",
     "sdk",
     "api",
     "typescript",

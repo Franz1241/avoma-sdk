@@ -1,8 +1,10 @@
 # avoma-sdk
 
-TypeScript SDK for the Avoma API.
+TypeScript SDK client for [Avoma](https://www.avoma.com/), the AI platform.
 
-This package wraps the Avoma OpenAPI spec with a small fetch-based client and convenience helpers for common Avoma workflows.
+> [!WARNING]
+> This is an unofficial SDK client. Use this package at your own risk. This project is not affiliated with, endorsed by, or otherwise involved with [Avoma](https://www.avoma.com/) in any way.
+> This package wraps the [Avoma](https://dev.avoma.com/) OpenAPI spec with a small fetch-based client and convenience helpers for common [Avoma](https://www.avoma.com/) workflows.
 
 ## Install
 
@@ -204,36 +206,6 @@ try {
     console.error(error.status, error.url, error.body);
   }
 }
-```
-
-## Build
-
-```bash
-bun run build
-```
-
-This generates:
-
-- normalized OpenAPI inputs for codegen
-- `src/generated/avoma.openapi.ts`
-- publishable library output in `dist/`
-
-## Publish to npm
-
-```bash
-bun run build
-npm login
-npm publish
-```
-
-Notes:
-
-- The current package name `avoma-sdk` appears to be available on npm.
-- For an unscoped package like this one, `npm publish` is public by default.
-- If you later switch to a scoped package like `@your-scope/avoma-sdk`, publish with:
-
-```bash
-npm publish --access public
 ```
 
 ## Development
