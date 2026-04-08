@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     // Environment setup & latest features
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "target": "ESNext",
+    "types": ["bun-types", "node"],
     "module": "Preserve",
     "moduleDetection": "force",
     "jsx": "react-jsx",
@@ -17,6 +18,7 @@
     // Best practices
     "strict": true,
     "skipLibCheck": true,
+    "ignoreDeprecations": "6.0",
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,

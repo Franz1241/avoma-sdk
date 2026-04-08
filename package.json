@@ -1,11 +1,49 @@
 {
   "name": "avoma-sdk",
-  "module": "index.ts",
-  "type": "module",
-  "devDependencies": {
-    "@types/bun": "latest"
+  "version": "0.1.0",
+  "description": "Typed TypeScript SDK for the Avoma API.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Franz1241/avoma-sdk.git"
   },
-  "peerDependencies": {
-    "typescript": "^5"
+  "homepage": "https://github.com/Franz1241/avoma-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/Franz1241/avoma-sdk/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "avoma",
+    "sdk",
+    "api",
+    "typescript",
+    "openapi"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "scripts": {
+    "generate:types": "bun run scripts/normalize-openapi.ts && bunx openapi-typescript .generated/openapi.normalized.yml -o src/generated/avoma.openapi.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "bun run generate:types && tsup index.ts --format esm --dts --target es2020 --clean --out-dir dist",
+    "check": "bun run generate:types && bun run typecheck && bun run build",
+    "prepack": "bun run build"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^25.5.2",
+    "openapi-typescript": "^7.13.0",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2"
   }
 }
