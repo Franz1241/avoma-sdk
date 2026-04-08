@@ -1,0 +1,2705 @@
+openapi: 3.0.0
+info:
+  title: Reusable external API components
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    http_error_response:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+          description: Not Found
+          example: Not Found
+    unauthorized_error_response:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+          description: 'Invalid Client Key or Secret'
+          example: 'Invalid Client Key or Secret'
+    permission_denied:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+          description: 'You do not have permission to perform this action.'
+          example: 'You do not have permission to perform this action.'
+    rate_limit_error_response:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+          description: 'You have exceeded the daily download limit'
+          example: 'You have exceeded the daily download limit'
+    smart_category_settings_request:
+      type: object
+      required:
+        - name
+        - settings
+        - prompts
+        - keywords
+      properties:
+        name:
+          type: string
+          description: Name of the smart category
+        settings:
+          type: object
+          description: Settings of the smart category
+          properties:
+            aug_notes_enabled:
+              type: boolean
+              description: Bookmark and transcript highlight
+            prompt_extract_strategy:
+              type: string
+              enum:
+                - after
+                - before
+                - contains
+              description: Prompt extract strategy
+            prompt_extract_length:
+              type: string
+              enum:
+                - short
+                - medium
+                - long
+              description: Prompt extract length
+            keyword_notes_enabled:
+              type: boolean
+              description: Keyword notes enabled
+        prompts:
+          type: array
+          description: Prompts of the smart category
+          items:
+            type: string
+        keywords:
+          type: array
+          description: Keywords of the smart category
+          items:
+            type: string
+    smart_category_update_request:
+      type: object
+      properties:
+        settings:
+          type: object
+          description: Settings of the smart category
+          properties:
+            aug_notes_enabled:
+              type: boolean
+              description: Bookmark and transcript snippet
+            prompt_extract_strategy:
+              type: string
+              enum:
+                - after
+                - before
+                - contains
+              description: Prompt extract strategy
+            prompt_extract_length:
+              type: string
+              enum:
+                - short
+                - medium
+                - long
+              description: Prompt extract length
+            keyword_notes_enabled:
+              type: boolean
+              description: Keyword notes enabled
+        prompts:
+          type: array
+          description: Prompts of the smart category
+          items:
+            type: string
+        keywords:
+          type: array
+          description: Keywords of the smart category
+          items:
+            type: string
+    smart_category_settings_response:
+      type: object
+      required:
+        - name
+        - settings
+        - prompts
+        - keywords
+      properties:
+        name:
+          type: string
+          description: Name of the smart category
+        settings:
+          type: object
+          description: Settings of the smart category
+          properties:
+            uuid:
+              type: string
+              format: uuid
+              description: UUID of the smart category
+            aug_notes_enabled:
+              type: boolean
+              description: Bookmark and transcript highlight
+            prompt_extract_strategy:
+              type: string
+              enum:
+                - after
+                - before
+                - contains
+              description: Prompt extract strategy
+            prompt_extract_length:
+              type: string
+              enum:
+                - short
+                - medium
+                - long
+              description: Prompt extract length
+            keyword_notes_enabled:
+              type: boolean
+              description: Keyword notes enabled
+        prompts:
+          type: array
+          description: Prompts of the smart category
+          items:
+            type: string
+        keywords:
+          type: array
+          description: Keywords of the smart category
+          items:
+            type: string
+    smart_categories:
+      type: object
+      description: Smart Category Object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: UUID of the custom category.
+
+        name:
+          type: string
+          description: Name of the custom category.
+
+        key:
+          type: string
+          description: Key of the custom category.
+
+        keywords:
+          type: array
+          description: Keywords of the custom category.
+          items:
+            type: object
+            description: Keyword object
+            properties:
+              uuid:
+                type: string
+                format: uuid
+                description: Unique ID of the keyword.
+              label:
+                type: string
+                description: Label of the the keyword.
+                example: "Competitor"
+              created:
+                type: string
+                format: "date-time"
+                description: Creation date-time(UTC).
+              custom_category:
+                type: string
+                format: uuid
+                description: Unique ID of the custom category.
+              variations:
+                type: array
+                description: Variations of the keyword.
+                items:
+                  type: string
+                  description: Variation of the keyword.
+                  example: "Competitor"
+              is_primary:
+                type: boolean
+                description: Is primary keyword.
+        prompts:
+          type: array
+          description: Prompts of the custom category.
+          items:
+            type: object
+            description: Prompt object
+            properties:
+              uuid:
+                type: string
+                format: uuid
+                description: Unique ID of the prompt.
+              label:
+                type: string
+                description: Label of the the prompt.
+                example: "How did you hear about us"
+              created:
+                type: string
+                format: "date-time"
+                description: Creation date-time(UTC).
+              custom_category:
+                type: string
+                format: uuid
+                description: Unique ID of the custom category.
+              variations:
+                type: array
+                description: Variations of the prompt.
+                items:
+                  type: string
+                  description: Variation of the prompt.
+                  example: "How did you hear about us"
+        settings:
+          type: object
+          description: Settings of the custom category.
+          properties:
+            aug_notes_enabled:
+              type: boolean
+              description: Augmented notes enabled.
+            keyword_notes_enabled:
+              type: boolean
+              description: Keyword notes enabled.
+            keyword_tracking_enabled:
+              type: boolean
+              description: Keyword tracking enabled.
+            prompt_notes_enabled:
+              type: boolean
+              description: Prompt notes enabled.
+            prompt_extract_strategy:
+              type: string
+              description: Prompt extract strategy.
+            prompt_extract_length:
+              type: string
+              description: Prompt extract length.
+
+        is_default:
+          type: boolean
+          description: Is default custom category.
+    pagination_data:
+      type: object
+      required:
+        - count
+        - next
+        - previous
+      properties:
+        count:
+          type: integer
+          description: Total number of records in result.
+          minimum: 0
+        next:
+          type: string
+          description: URL to the next page if available.
+          nullable: true
+          example: https://example.com/api/v1/meeting/?page=2
+        previous:
+          type: string
+          description: URL to the previous page if available.
+          nullable: true
+          example: https://example.com/api/v1/meeting/?page=1
+    recordings_200:
+      type: object
+      description: This api returns a video and audio recording download url.
+      required:
+        - uuid
+        - meeting_uuid
+      properties:
+        meeting_uuid:
+          type: string
+          format: uuid
+          description: Unique ID of the meeting.
+        uuid:
+          type: string
+          format: uuid
+          description: Unique ID of the recording.
+        video_url:
+          type: string
+          format: url
+          description: Signed url of video recording file.
+        audio_url:
+          type: string
+          format: url
+          description: Signed url of audio recording file.
+        valid_till:
+          type: string
+          format: date-time
+          description: expiry date of the video and audio recording download url
+        message:
+          type: string
+          description: Response message
+          example: "The request has been processed successfully."
+    recordings_202:
+      type: object
+      description: This api returns a video and audio recording download url.
+      required:
+        - uuid
+        - meeting_uuid
+      properties:
+        meeting_uuid:
+          type: string
+          format: uuid
+          description: Unique ID of the meeting.
+        uuid:
+          type: string
+          format: uuid
+          description: Unique ID of the recording.
+        message:
+          type: string
+          description: Response message
+          example: "The request has been received, your recording is being processed, recording will be sent via email at <email>"
+    patch_call_request:
+      type: object
+      anyOf:
+        - properties:
+            additional_details:
+              type: string
+              description: Additional call metadata in JSON format
+        - properties:
+            is_voicemail:
+              type: boolean
+              description: Whether the call is a voicemail
+        - properties:
+            answered:
+              type: boolean
+              description: Whether the call was answered
+        - properties:
+            frm_name:
+              type: string
+              description: Name of the caller (from participant)
+        - properties:
+            to_name:
+              type: string
+              description: Name of the callee (to participant)
+        - properties:
+            subject:
+              type: string
+              description: Meeting subject/topic
+        - properties:
+            meeting_purpose_uuid:
+              type: string
+              format: uuid
+              description: Unique ID of the meeting purpose/type
+        - properties:
+            meeting_outcome_uuid:
+              type: string
+              format: uuid
+              description: Unique ID of the meeting outcome
+        - properties:
+            crm_association:
+              description: CRM association object
+              example:
+              - crm_obj_id: '102721358755'
+                crm_obj_type: contact
+              - crm_obj_id: '30447071570'
+                crm_obj_type: account
+              - crm_obj_id: '34202467419'
+                crm_obj_type: oppo
+              properties:
+                crm_obj_id:
+                  description: Unique identifier for the CRM object
+                  type: string
+                crm_obj_type:
+                  description: Type of CRM object
+                  type: string
+              type: array
+    call_response:
+      type: object
+      properties:
+        external_id:
+          description: Unique id of the call from the dialer system like hubspot, twilio, zoom, etc.
+          type: string
+          maxLength: 255
+        user_email:
+          description: Email of the user who made or received the call. This should be an Avoma user's email. License for this user will be used to process the call.
+          type: string
+          format: email
+          maxLength: 254
+        organization:
+          type: object
+          properties:
+            id:
+              type: integer
+              readOnly: true
+            created:
+              type: string
+              format: date-time
+              readOnly: true
+            modified:
+              type: string
+              format: date-time
+              readOnly: true
+            uuid:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 255
+            domain:
+              type: string
+              maxLength: 255
+            timezone:
+              type: string
+            is_marked_for_deletion:
+              type: boolean
+          required:
+            - name
+            - domain
+          readOnly: true
+        state:
+          enum:
+            - created
+            - queued
+            - inprogress
+            - done
+            - error
+          type: string
+          readOnly: true
+        frm:
+          description: Phone number from which call was made.
+          type: string
+          nullable: true
+          maxLength: 255
+          example: "+11234567890"
+        frm_name:
+          description: Name of the caller who made the call.
+          type: string
+          nullable: true
+          maxLength: 255
+        to:
+          description: Phone number to which call was made.
+          type: string
+          nullable: true
+          maxLength: 255
+          example: "+12234567890"
+        to_name:
+          description: Name of the person to whom call was made.
+          type: string
+          nullable: true
+          maxLength: 255
+        start_at:
+          description: Start time of the call.
+          type: string
+          format: date-time
+          nullable: true
+        end_at:
+          description: End time of the call.
+          type: string
+          format: date-time
+          nullable: true
+        recording_url:
+          description: URL of the recording of the call. This will be used to download the recording by avoma for processing, so should be a public URL.
+          type: string
+          nullable: true
+          example: "https://example.com/recording.mp3"
+        direction:
+          description: Direction of the call, e.g. Inbound, Outbound
+          type: string
+          nullable: true
+          maxLength: 255
+          example: "Outbound"
+        answered:
+          description: Whether the call was answered, e.g true, false
+          type: boolean
+          nullable: true
+          example: "true"
+        additional_details:
+          description: Additional details of the call. This should be a JSON object.
+          type: string
+          nullable: true
+        meeting:
+          type: object
+          properties:
+            id:
+              type: integer
+              readOnly: true
+            created:
+              type: string
+              format: date-time
+              readOnly: true
+            modified:
+              type: string
+              format: date-time
+              readOnly: true
+            uuid:
+              type: string
+              format: uuid
+              readOnly: true
+            subject:
+              type: string
+              nullable: true
+              maxLength: 512
+            organizer_email:
+              type: string
+              format: email
+              maxLength: 254
+            external_id:
+              type: string
+              maxLength: 512
+            state:
+              enum:
+                - tentative
+                - confirmed
+                - cancelled
+                - inprogress
+                - ended
+                - error
+              type: string
+            start_at:
+              type: string
+              format: date-time
+              nullable: true
+            end_at:
+              type: string
+              format: date-time
+              nullable: true
+            location:
+              type: string
+              nullable: true
+              maxLength: 512
+            meeting_url:
+              type: string
+              nullable: true
+            is_call:
+              type: boolean
+            is_internal:
+              type: boolean
+            is_dummy:
+              type: boolean
+            is_impromptu:
+              type: boolean
+            is_private:
+              type: boolean
+            is_disclaimer_added:
+              type: boolean
+            is_original:
+              type: boolean
+            is_split_processed:
+              type: boolean
+            original_model_counts:
+              type: object
+              nullable: true
+            original_org_count:
+              type: integer
+              maximum: 2147483647
+              minimum: -2147483648
+            org_not_found:
+              type: boolean
+            organization:
+              type: integer
+              nullable: true
+            recurring_master:
+              type: integer
+              nullable: true
+            original_meeting:
+              type: integer
+              nullable: true
+          required:
+            - organizer_email
+          readOnly: true
+        is_voicemail:
+          description: Indicates if the call is a voicemail.
+          type: boolean
+          default: false
+        source:
+          description: Lowercase string indicating the source of the call, e.g. zoom, zoomphone, twilio, phoneburner, ringcentral, aircall, etc.
+          type: string
+          nullable: true
+          maxLength: 255
+          example: "ringcentral"
+        subject:
+          description: Subject of the meeting associated with the call.
+          type: string
+          nullable: true
+          maxLength: 512
+          example: "Sales Call with John Doe"
+        meeting_purpose_uuid:
+          description: UUID of the meeting purpose/type associated with the call.
+          type: string
+          format: uuid
+          nullable: true
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        meeting_outcome_uuid:
+          description: UUID of the meeting outcome associated with the call.
+          type: string
+          format: uuid
+          nullable: true
+          example: "123e4567-e89b-12d3-a456-426614174001"
+        participants:
+          type: array
+          description: List of participants in the call. First entry should be of the prospect or lead with whom the call happened. This will be used in formulating the subject of the call in Avoma.
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              name:
+                type: string
+                maxLength: 255
+              crm_association:
+                description: CRM association object
+                example:
+                - crm_obj_id: '102721358755'
+                  crm_obj_type: contact
+                - crm_obj_id: '30447071570'
+                  crm_obj_type: account
+                - crm_obj_id: '34202467419'
+                  crm_obj_type: oppo
+                properties:
+                  crm_obj_id:
+                    description: Unique identifier for the CRM object
+                    type: string
+                  crm_obj_type:
+                    description: Type of CRM object
+                    type: string
+                type: array
+            required:
+              - email
+          writeOnly: true
+        crm_association:
+          description: CRM association object
+          example:
+          - crm_obj_id: '102721358755'
+            crm_obj_type: contact
+          - crm_obj_id: '30447071570'
+            crm_obj_type: account
+          - crm_obj_id: '34202467419'
+            crm_obj_type: oppo
+          properties:
+            crm_obj_id:
+              description: Unique identifier for the CRM object
+              type: string
+            crm_obj_type:
+              description: Type of CRM object
+              type: string
+          type: array
+        required:
+         - external_id
+         - user_email
+         - frm
+         - to
+         - start_at
+         - recording_url
+         - direction
+         - source
+         - participants
+    bad_request_body:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: array
+          items:
+            type: string
+          description: Error messages
+          example:
+            - "This field may not be blank."
+    meeting_type_response:
+      type: object
+      description: Meeting Type Object
+      required:
+        - uuid
+        - label
+        - description
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Unique ID of the meeting type.
+        label:
+          type: string
+          maxLength: 64
+          description: Label/name of the meeting type.
+          example: "Discovery Call"
+        description:
+          type: string
+          description: Description of the meeting type.
+          example: "Initial discovery call with potential customers"
+
+    meeting_type_request:
+      type: object
+      description: Meeting Type Request Object
+      required:
+        - label
+        - description
+      properties:
+        label:
+          type: string
+          maxLength: 64
+          description: Label/name of the meeting type.
+          example: "Discovery Call"
+        description:
+          type: string
+          description: Description of the meeting type.
+          example: "Initial discovery call with potential customers"
+
+    meeting_type_update_request:
+      type: object
+      description: Meeting Type Update Request Object
+      properties:
+        label:
+          type: string
+          maxLength: 64
+          description: Label/name of the meeting type.
+          example: "Discovery Call"
+        description:
+          type: string
+          description: Description of the meeting type.
+          example: "Initial discovery call with potential customers"
+
+    meeting_outcome_response:
+      type: object
+      description: Meeting Outcome Object
+      required:
+        - uuid
+        - label
+        - description
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Unique ID of the meeting outcome.
+        label:
+          type: string
+          maxLength: 64
+          description: Label/name of the meeting outcome.
+          example: "Qualified"
+        description:
+          type: string
+          description: Description of the meeting outcome.
+          example: "Lead is qualified and ready for next steps"
+
+    meeting_outcome_request:
+      type: object
+      description: Meeting Outcome Request Object
+      required:
+        - label
+        - description
+      properties:
+        label:
+          type: string
+          maxLength: 64
+          description: Label/name of the meeting outcome.
+          example: "Qualified"
+        description:
+          type: string
+          description: Description of the meeting outcome.
+          example: "Lead is qualified and ready for next steps"
+
+    meeting_outcome_update_request:
+      type: object
+      description: Meeting Outcome Update Request Object
+      properties:
+        label:
+          type: string
+          maxLength: 64
+          description: Label/name of the meeting outcome.
+          example: "Qualified"
+        description:
+          type: string
+          description: Description of the meeting outcome.
+          example: "Lead is qualified and ready for next steps"
+    engagement_metric_base:
+      type: object
+      description: Base engagement metric with value
+      properties:
+        value:
+          type: number
+          nullable: true
+          description: Metric value
+
+    engagement_list_item:
+      type: object
+      description: User engagement metrics
+      properties:
+        user_email:
+          type: string
+          format: email
+          description: Email address of the user
+        conversations_listened:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Number of conversations listened to
+        snippets_listened:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Number of snippets listened to
+        conversations_shared:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Number of conversations shared
+        conversations_commented:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Number of conversations with comments
+        total_comments:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Total number of comments made
+        conversations_listened_duration:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Total duration listened in seconds
+        conversations_listened_percent:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Percentage of conversations listened to
+
+    engagement_user_item:
+      type: object
+      description: Participant engagement metrics for a specific user
+      properties:
+        participant_email:
+          type: string
+          format: email
+          description: Email address of the participant
+        conversations_listened:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Number of conversations listened to
+        snippets_listened:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Number of snippets listened to
+        conversations_shared:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Number of conversations shared
+        conversations_commented:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Number of conversations with comments
+        total_comments:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Total number of comments made
+        avg_playback_speed:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Average playback speed
+        conversations_listened_duration:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Total duration listened in seconds
+        conversations_listened_percent:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Percentage of conversations listened to
+
+    engagement_list_response:
+      allOf:
+        - $ref: "#/components/schemas/pagination_data"
+        - type: object
+          required:
+            - results
+          properties:
+            results:
+              type: array
+              description: Array of engagement metrics
+              items:
+                oneOf:
+                  - $ref: "#/components/schemas/engagement_list_item"
+                  - $ref: "#/components/schemas/engagement_user_item"
+
+    engagement_summary_response:
+      type: object
+      description: Summary statistics for engagement metrics
+      properties:
+        conversations_listened:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Total conversations listened
+        snippets_listened:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Total snippets listened
+        conversations_shared:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Total conversations shared
+        conversations_commented:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Total conversations with comments
+        total_comments:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Total comments made
+        avg_playback_speed:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Average playback speed
+        conversations_listened_duration:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Total listening duration (seconds)
+        conversations_listened_percent:
+          allOf:
+            - $ref: "#/components/schemas/engagement_metric_base"
+            - description: Average percentage listened
+    external_snippet:
+      type: object
+      description: Meeting snippet object
+      required:
+        - meeting_uuid
+        - title
+        - description
+        - start_time
+        - end_time
+        - duration
+        - speakers
+        - all_participants
+        - source
+        - created
+        - modified
+      properties:
+        meeting_uuid:
+          type: string
+          format: uuid
+          description: UUID of the meeting this snippet belongs to.
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        title:
+          type: string
+          description: Title of the snippet.
+          example: "Product Demo Discussion"
+        description:
+          type: string
+          description: Description/content of the snippet.
+          nullable: true
+          example: "Customer expressed interest in the new features"
+        start_time:
+          type: integer
+          description: Start time of the snippet in seconds from the beginning of the recording.
+          example: 120
+        end_time:
+          type: integer
+          description: End time of the snippet in seconds from the beginning of the recording.
+          example: 180
+        duration:
+          type: number
+          format: float
+          description: Duration of the snippet in seconds.
+          example: 60
+        source:
+          type: string
+          enum:
+            - ai_generated
+            - user_created
+          description: >
+            Source of the snippet:
+
+            - `ai_generated`: Snippet was automatically generated by AI.
+
+            - `user_created`: Snippet was manually created by a user.
+          example: "ai_generated"
+        speakers:
+          type: object
+          description: Object containing speakers associated with this snippet, keyed by speaker number.
+          additionalProperties:
+            type: object
+            required:
+              - email
+              - speaker_number
+              - is_rep
+            properties:
+              email:
+                type: string
+                format: email
+                description: Email of the speaker.
+                example: "john.doe@example.com"
+              name:
+                type: string
+                description: Name of the speaker.
+                nullable: true
+                example: "John Doe"
+              speaker_number:
+                type: integer
+                description: Speaker number identifier.
+                example: 0
+              is_rep:
+                type: boolean
+                description: Whether the speaker is a representative.
+                example: true
+        all_participants:
+          type: array
+          description: All participants in the meeting.
+          items:
+            type: object
+            required:
+              - email
+            properties:
+              name:
+                type: string
+                description: Name of the participant.
+                nullable: true
+                example: "John Doe"
+              email:
+                type: string
+                format: email
+                description: Email of the participant.
+                example: "john.doe@example.com"
+        created:
+          type: string
+          format: "date-time"
+          description: Creation date-time(UTC) of the snippet.
+        modified:
+          type: string
+          format: "date-time"
+          description: Last modification date-time(UTC) of the snippet.
+    disable_reason:
+      type: string
+      nullable: true
+      description: >
+        Reason why recording was disabled (if applicable). Possible values:
+
+        ### **General states:**
+        
+        - `"None"`: No disable reason (recording enabled)
+        
+        - `"User Enabled"`: User enabled recording
+        
+        - `"User Disabled"`: User disabled recording
+        
+        - `"Automation Enabled"`: Automation enabled recording
+        
+        - `"Automation Disabled"`: Automation disabled recording
+        
+        - `"Meeting Created"`: Meeting created
+        
+        - `"Email Invite Meeting Created"`: Meeting created via email invite
+
+        ###**Conference/Connection issues:**
+        
+        - `"Missing conferencing details"`: Conferencing details not found or incorrect
+        
+        - `"Unsupported conferencing provider"`: Conferencing provider not supported
+        
+        - `"Conference Not Found"`: Conference not found
+        
+        - `"Cannot Dial Conference"`: Cannot dial conference
+        
+        - `"Non Dialable Service"`: Non-dialable service
+
+        ### **Filter-based reasons:**
+        
+        - `"Recording limits exceeded"`: Recording limits exceeded
+        
+        - `"Blacklisted domain"`: Participants from restricted or blacklisted domain
+        
+        - `"Recording license missing"`: No participants have recording feature or license
+        
+        - `"Recording disabled"`: Recording was disabled
+        
+        - `"Recording setting disabled"`: Recording setting disabled for meeting type
+        
+        - `"Meeting invite not accepted"`: No one has accepted the meeting invite
+        
+        - `"Parallel meetings"`: Multiple parallel meetings for the same organizer
+        
+        - `"Limits Meeting Filter"`: Limits meeting filter applied
+        
+        - `"Restricted Domains And Emails Meeting Filter"`: Restricted domains and emails meeting filter
+        
+        - `"Recording Feature Filter"`: Recording feature filter
+        
+        - `"Phonebot Feature Filter"`: Phonebot feature filter
+        
+        - `"Internal Meeting Filter"`: Internal meeting filter
+        
+        - `"External Meeting Filter"`: External meeting filter
+        
+        - `"Accepted Meeting Filter"`: Accepted meeting filter
+        
+        - `"Duplicate Meeting Filter"`: Duplicate meeting filter
+        
+        - `"Recurring Meeting Recording Action Filter"`: Recurring meeting recording action filter
+        
+        - `"Do Not Dial Meeting Filter"`: Do not dial meeting filter
+        
+        - `"Organizer Only Meeting Filter"`: Organizer only meeting filter
+        
+        - `"Meeting Link Filter"`: Meeting link filter
+        
+        - `"Automation disabled"`: Meeting was not recorded because recording was disabled by automation
+        
+        - `"Do not dial filter"`: Meeting was not recorded because it was filtered by the do not dial setting
+        
+        - `"Organizer only filter"`: Meeting was not recorded because it was filtered by the organizer only setting
+        
+        - `"Meeting link filter"`: Meeting was not recorded because it was filtered by the meeting link setting
+
+        ### **Bot/Recording issues:**
+        
+        - `"Bot denied entry"`: Avoma assistant (bot) was denied entry
+        
+        - `"Bot timed out waiting for approval"`: Bot timed out waiting for approval
+        
+        - `"Bot timed out waiting for meeting host"`: Bot timed out waiting for meeting host
+        
+        - `"No participants"`: No one joined the meeting
+        
+        - `"Host in another meeting"`: Host had a parallel meeting running
+
+        ### **Recording processing issues:**
+        
+        - `"Silent recording"`: Recording has no audio or no one spoke
+        
+        - `"Recording too short"`: Recording is too short to be processed
+        
+        - `"Recording not received."`: Recording not received from provider
+        
+        - `"Recording Not Saved"`: Recording not saved in cloud
+        
+        - `"No recording found"`: No recording found
+        
+        - `"Recording error"`: Recording error occurred
+        
+        - `"Invalid recording details"`: Invalid recording details
+        
+        - `"Invalid video"`: Invalid video
+        
+        - `"Download Error"`: Download error
+        
+        - `"Download Failed"`: Download failed
+
+        ### **Provider-specific issues:**
+        
+        - `"Zoom Meeting did not start"`: Zoom meeting did not start
+        
+        - `"Meeting Not Recorded"`: Meeting was not recorded (provider-specific)
+        
+        - `"Meeting Did Not Start"`: Meeting did not start (provider-specific)
+        
+        - `"MS Teams meeting did not start"`: MS Teams meeting did not start
+        
+        - `"MS Teams recording not received"`: MS Teams recording not received
+        
+        - `"MS Teams meeting not recorded"`: MS Teams meeting not recorded
+        
+        - `"Sign in required for meeting"`: Sign in required for meeting
+        
+        - `"Webinar meeting not supported"`: Webinar meeting not supported
+        
+        - `"No eligible participant with recording limits"`: No eligible participant with recording limits
+
+        ### **Other issues:**
+        
+        - `"Restricted domain"`: Restricted or blacklisted domain
+        
+        - `"Overlapping meeting"`: Overlapping meeting at the same time
+        
+        - `"Captcha required"`: Captcha required to join the meeting
+        
+        - `"No Avoma user in meeting"`: No Avoma user was present in the meeting
+        
+        - `null`: No disable reason information available.
+      example: "Missing conferencing details"
+
+  examples:
+    engagement_list_example:
+      value:
+        count: 49
+        next: "https://example.com/api/v1/engagement/?from_date=2025-10-04T18%3A30%3A00Z&page=2&page_size=10&to_date=2025-10-12T18%3A29%3A59Z"
+        previous: null
+        results:
+          - user_email: "user1@company.com"
+            conversations_listened: 18
+            snippets_listened: 0
+            conversations_shared: 1
+            conversations_commented: 1
+            total_comments: 1
+            conversations_listened_duration: 42006.72
+            conversations_listened_percent: 67.73
+          - user_email: "user2@company.com"
+            conversations_listened: 21
+            snippets_listened: 0
+            conversations_shared: 1
+            conversations_commented: 0
+            total_comments: 0
+            conversations_listened_duration: 14210.41
+            conversations_listened_percent: 26.62
+
+    engagement_summary_example:
+      value:
+        conversations_listened: 170
+        snippets_listened: 22
+        conversations_shared: 15
+        conversations_commented: 4
+        total_comments: 5
+        conversations_listened_duration: 117340.12
+        conversations_listened_percent: 17.43
+
+    snippet_missing_params:
+      summary: Missing required parameters
+      value:
+        detail: "meeting_uuid is required"
+
+    snippet_missing_from_date:
+      summary: Missing required from_date parameter
+      value:
+        detail: "from_date is required when meeting_uuid is not provided"
+
+    snippet_missing_to_date:
+      summary: Missing required to_date parameter
+      value:
+        detail: "to_date is required when meeting_uuid is not provided"
+
+    snippet_invalid_date_format:
+      summary: Invalid date format
+      value:
+        detail: "Invalid date format for from_date or to_date"
+
+    snippet_invalid_date_order:
+      summary: Invalid date order
+      value:
+        detail: "from_date must be before to_date"
+
+    snippet_date_range_too_large:
+      summary: Date range exceeds maximum
+      value:
+        detail: "Date range cannot exceed 180 days when meeting_uuid is not provided. Current range: 250 days."
+
+    notes_markdown_example:
+      summary: Notes in Markdown format
+      value:
+        {
+          "count": 122,
+          "next": "https://api.avoma.com/v1/notes/?from_date=2026-01-01&output_format=markdown&page=2&to_date=2026-01-06",
+          "previous": null,
+          "results": [
+            {
+              "data": "## Lorem Ipsum\n\n  * Dolor sit: Amet Consectetur, Adipiscing Elit\n\n## Sed Do Eiusmod\n\n  * Tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.\n  * Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n  * Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n  * Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.\n  * Anim id est laborum sed ut perspiciatis unde omnis iste natus error sit voluptatem.\n\n  \n\n## Accusantium Doloremque\n\n  * Totam Rem\n\n    * Aperiam, eaque ipsa quae ab illo inventore veritatis\n  * Et Quasi\n\n    * Architecto beatae vitae dicta sunt explicabo\n    * Nemo enim ipsam voluptatem quia voluptas sit aspernatur\n    * Aut odit aut fugit, sed quia consequuntur magni dolores\n    * Eos qui ratione voluptatem sequi nesciunt\n    * Neque porro quisquam est, qui dolorem ipsum quia dolor\n\n  \n\n## Sit Amet\n\n  * Consectetur, adipisci velit, sed quia non numquam.\n\n  \n\n## Eius Modi\n\n  * Tempora incidunt ut labore et dolore magnam: 50 aliquam quaerat + 10 voluptatem.\n  * Ut enim ad minima veniam, quis nostrum exercitationem ullam.\n  * Corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.\n  * Quis autem vel eum iure reprehenderit qui in ea voluptate.\n  * Velit esse quam nihil molestiae consequatur.\n\n  \n\n## Vel Illum\n\n  * Qui dolorem eum fugiat quo voluptas nulla pariatur.\n  * At vero eos et accusamus et iusto odio dignissimos.\n  * Ducimus qui blanditiis praesentium voluptatum deleniti.\n\n  \n\n## Atque Corrupti\n\n  * Quos dolores et quas molestias excepturi sint occaecati.\n\n  \n\n## Cupiditate Non\n\n  * Provident, similique sunt in culpa qui officia deserunt.\n  * Mollitia animi, id est laborum et dolorum fuga.\n\n  \n\n## Et Harum\n\n  * Quidem rerum facilis est et expedita distinctio.\n  * Nam libero tempore, cum soluta nobis est eligendi.\n  * Optio cumque nihil impedit quo minus id quod maxime.\n\n  \n\n## Placeat Facere\n\n  * Possimus, omnis voluptas assumenda est, omnis dolor repellendus.\n  * Temporibus autem quibusdam et aut officiis debitis aut rerum.\n\n  \n\n## Necessitatibus Saepe\n\n  * Eveniet ut et voluptates repudiandae sint et molestiae non recusandae.\n  * Itaque earum rerum hic tenetur a sapiente delectus.\n  * Ut aut reiciendis voluptatibus maiores alias consequatur.\n  * Aut perferendis doloribus asperiores repellat.\n\n",
+              "created": "2026-01-05T23:28:16.205807Z",
+              "modified": "2026-01-05T23:29:42.186821Z"
+            },
+            {
+              "data": "## Lorem Ipsum\n\n  * Dolor: Sit Amet, Consectetur Adipiscing, Elit Sed\n\n",
+              "created": "2026-01-05T21:57:04.346554Z",
+              "modified": "2026-01-05T21:57:04.474411Z"
+            },
+            {
+              "data": "## Lorem Ipsum\n\n  * Dolor: Sit Amet, Consectetur Adipiscing\n\n## Sed Do Eiusmod\n\n  * Tempor incididunt ut labore et dolore magna aliqua.\n  * Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.\n  * Nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.\n  * Voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n  * Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.\n\n  \n\n## Mollit Anim\n\n  * Id Est\n\n    * Laborum et dolorum fuga. Et harum quidem rerum facilis est.\n    * Et expedita distinctio. Nam libero tempore, cum soluta nobis.\n  * Est Eligendi\n\n    * Optio cumque nihil impedit quo minus id quod maxime.\n    * Placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.\n    * Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus.\n    * Saepe eveniet ut et voluptates repudiandae sint et molestiae.\n    * Non recusandae. Itaque earum rerum hic tenetur a sapiente.\n    * Delectus, ut aut reiciendis voluptatibus maiores alias consequatur.\n\n  \n\n## Aut Perferendis\n\n  \n\n## Doloribus Asperiores\n\n  * Repellat. Hanc ego cum teneam sententiam, quid est cur verear.\n  * Ne ad eam nonumy bonorum, te datur graece scriptorem pro.\n  * Solum ceteros quo, graeci melius sit et, vix case prima ad.\n  * No sit dicit veritus, eos ex homero salutandi.\n  * Vis no partem vivendum, vim ad iusto facete.\n\n  \n\n## Mea Eu\n\n  * Feugiat explicari, eu exerci timeam cum. Et vidit copiosae, sed eu quas.\n  * Iracundia. Has ea choro primis, et inermis voluptaria his.\n  * Vix te tation dicunt, an eam causae insolens. Cu sed natum.\n  * Tantas, mel ad graece equidem, at per facete periculis.\n  * Te usu aeque iudico.\n\n  \n\n## Eum No\n\n  * Atqui tollit. Sit te inani definitionem.\n  * Mea ea solum dicunt, sed affer.\n  * Vis no partem vivendum.\n  * Vim ad iusto facete.\n  * Feugiat explicari, eu exerci timeam.\n\n  \n\n## Cum Et\n\n  * Vidit copiosae, sed eu quas iracundia.\n  * Has ea choro primis, et inermis.\n  * Voluptaria his. Vix te tation dicunt.\n  * An eam causae insolens.\n  * Cu sed natum tantas, mel ad.\n\n  \n\n## Graece Equidem\n\n  \n\n## At Per\n\n  * Facete periculis. Te usu aeque iudico.\n  * Eum no atqui tollit. Sit te inani definitionem.\n  * Mea ea solum dicunt, sed affer.\n\n  \n  \n\n",
+              "created": "2026-01-05T21:45:12.927140Z",
+              "modified": "2026-01-05T22:16:21.358532Z"
+            },
+          ]
+        }
+
+    notes_json_example:
+      summary: Notes in JSON format
+      value:
+        {
+          "count": 1,
+          "next": null,
+          "previous": null,
+          "results": [
+            {
+              "data": [
+                {
+                  "children": [
+                    {
+                      "text": "Lorem Ipsum",
+                      "object": "text"
+                    }
+                  ],
+                  "object": "block",
+                  "type": "header-2",
+                  "data": {
+                    "block_key": "cb8hm",
+                    "highlight_notes_title": true,
+                    "machine_title": true
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Dolor: Sit Amet, Consectetur Adipiscing, Elit Sed, Do Eiusmod, Tempor Incididunt, Ut Labore, Et Dolore, Magna Aliqua, Ut Enim",
+                              "object": "text"
+                            }
+                          ],
+                          "object": "block",
+                          "type": "paragraph"
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    }
+                  ],
+                  "object": "block",
+                  "type": "unordered-list",
+                  "data": {}
+                },
+                {
+                  "children": [
+                    {
+                      "text": "Sed Do Eiusmod"
+                    }
+                  ],
+                  "type": "header-2",
+                  "data": {
+                    "block_created": "2026-11-16T12:17:01-07:00",
+                    "highlight_notes_title": true,
+                    "block_key": "highlight_category_key_takeaways"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "2666f794-724b-43e5-a05c-4f2ca2273ec9",
+                            "time": 189.83,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. \n\n[Image of software architecture diagram]\n",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "5b65f9a6-d943-487a-99bf-416460a50df2",
+                            "time": 251.05501,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "d8f67e5b-567c-4522-8cc2-18eed6b9fcdd",
+                            "time": 385.355,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "0b3388d7-82d5-488e-8651-c955bb15828c",
+                            "time": 534.44,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "64fae5de-49de-4afa-af34-b92803cecbe5",
+                            "time": 770,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    }
+                  ],
+                  "object": "block",
+                  "type": "unordered-list",
+                  "data": {
+                    "block_key": "highlight_category_key_takeaways",
+                    "highlight_notes_list": true
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "text": "Accusantium Doloremque"
+                    }
+                  ],
+                  "type": "header-2",
+                  "data": {
+                    "block_created": "2026-11-16T12:17:01-07:00",
+                    "highlight_notes_title": true,
+                    "block_key": "highlight_category_action_item"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Totam Rem",
+                              "object": "text"
+                            }
+                          ],
+                          "object": "block",
+                          "type": "paragraph"
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Aperiam, eaque ipsa quae ab illo inventore veritatis.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "c269e8a2-4287-4c91-a64d-c75286aad13e",
+                                    "time": 189.83,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Et quasi architecto beatae vitae dicta sunt explicabo. ",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "e9d0fd8a-8866-4e9c-8622-a7ab19daf0af",
+                                    "time": 237.71,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            }
+                          ],
+                          "object": "block",
+                          "type": "unordered-list",
+                          "data": {
+                            "block_key": null,
+                            "highlight_notes_list": true,
+                            "machine_speaker_list": true
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {
+                        "machine_speaker_title": true,
+                        "speaker_number": "0"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Nemo Enim",
+                              "object": "text"
+                            }
+                          ],
+                          "object": "block",
+                          "type": "paragraph"
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "5cca2c1a-c388-4614-a732-2df997fd4dfe",
+                                    "time": 609.455,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "dd65031b-8075-4e3e-89bf-9fb7f40f7caf",
+                                    "time": 728.17,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            }
+                          ],
+                          "object": "block",
+                          "type": "unordered-list",
+                          "data": {
+                            "block_key": null,
+                            "highlight_notes_list": true,
+                            "machine_speaker_list": true
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {
+                        "machine_speaker_title": true,
+                        "speaker_number": "1"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Nesciunt Neque",
+                              "object": "text"
+                            }
+                          ],
+                          "object": "block",
+                          "type": "paragraph"
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Porro quisquam est, qui dolorem ipsum quia dolor sit amet.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "8b56a5bb-bce5-47d5-99e0-9ca8dc2d7c51",
+                                    "time": 385.355,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "d9d708e6-08f1-4b4b-92e9-24ba5418dc81",
+                                    "time": 385.355,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Ut labore et dolore magnam aliquam quaerat voluptatem.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "7afc998d-449b-45eb-b06a-917fd9dea249",
+                                    "time": 385.355,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "6a2654ea-c5c5-44fa-85ef-07a8263105ce",
+                                    "time": 437.2,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. ",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "dea13ef1-f1fe-44d8-a902-f0470acb3757",
+                                    "time": 437.2,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            }
+                          ],
+                          "object": "block",
+                          "type": "unordered-list",
+                          "data": {
+                            "block_key": null,
+                            "highlight_notes_list": true,
+                            "machine_speaker_list": true
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {
+                        "machine_speaker_title": true,
+                        "speaker_number": "2"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Quis Autem",
+                              "object": "text"
+                            }
+                          ],
+                          "object": "block",
+                          "type": "paragraph"
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Vel eum iure reprehenderit qui in ea voluptate velit esse quam.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "5d3b0331-e00d-47e5-93a7-70376518a8b4",
+                                    "time": 263.03,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Nihil molestiae consequatur, vel illum qui dolorem eum fugiat.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "d621273e-55c2-4b4b-bfec-764d37e55062",
+                                    "time": 301.38498,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            }
+                          ],
+                          "object": "block",
+                          "type": "unordered-list",
+                          "data": {
+                            "block_key": null,
+                            "highlight_notes_list": true,
+                            "machine_speaker_list": true
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {
+                        "machine_speaker_title": true,
+                        "speaker_number": "3"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Quo Voluptas",
+                              "object": "text"
+                            }
+                          ],
+                          "object": "block",
+                          "type": "paragraph"
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Nulla pariatur. At vero eos et accusamus et iusto odio dignissimos.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "b9a8d17c-703b-41bc-86b1-2bb52f36c864",
+                                    "time": 501.58502,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "656b49ba-d735-48b4-acb2-359f6e120899",
+                                    "time": 644.61,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "machine_note_cleaned"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Quos dolores et quas molestias excepturi sint occaecati.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "c6038929-95a6-42ee-a7f8-f667e51e61d5",
+                                    "time": 719.65497,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            }
+                          ],
+                          "object": "block",
+                          "type": "unordered-list",
+                          "data": {
+                            "block_key": null,
+                            "highlight_notes_list": true,
+                            "machine_speaker_list": true
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {
+                        "machine_speaker_title": true,
+                        "speaker_number": "4"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Cupiditate Non",
+                              "object": "text"
+                            }
+                          ],
+                          "object": "block",
+                          "type": "paragraph"
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Provident, similique sunt in culpa qui officia deserunt mollitia animi.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "0ff0ddc7-a93f-40e5-9d4c-fe4f0c0d71d2",
+                                    "time": 770,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "text": "Id est laborum et dolorum fuga. Et harum quidem rerum facilis est.",
+                                      "object": "text",
+                                      "marks": []
+                                    }
+                                  ],
+                                  "object": "block",
+                                  "type": "transcript",
+                                  "data": {
+                                    "uuid": "41ecc089-4510-453f-abda-3144129362b6",
+                                    "time": 823.84,
+                                    "highlight_note_list_item": true,
+                                    "turing_note": true,
+                                    "model": "v12"
+                                  }
+                                }
+                              ],
+                              "object": "block",
+                              "type": "list-item",
+                              "data": {}
+                            }
+                          ],
+                          "object": "block",
+                          "type": "unordered-list",
+                          "data": {
+                            "block_key": null,
+                            "highlight_notes_list": true,
+                            "machine_speaker_list": true
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {
+                        "machine_speaker_title": true,
+                        "speaker_number": "5"
+                      }
+                    }
+                  ],
+                  "object": "block",
+                  "type": "unordered-list",
+                  "data": {
+                    "block_key": "highlight_category_action_item",
+                    "highlight_notes_list": true
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "text": "Et Expedita Distinctio"
+                    }
+                  ],
+                  "type": "header-2",
+                  "data": {
+                    "block_created": "2026-11-16T12:17:01-07:00",
+                    "highlight_notes_title": true,
+                    "block_key": "highlight_category_what_was_done"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Nam libero tempore, cum soluta nobis est eligendi optio cumque.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "0417ea90-92a8-4c3e-8da7-a8442651941b",
+                            "time": 189.83,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Nihil impedit quo minus id quod maxime placeat facere possimus.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "132eda74-322f-4594-acd9-eda2263f3024",
+                            "time": 263.03,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Omnis voluptas assumenda est, omnis dolor repellendus.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "bd63e37a-4e40-4016-bfcc-1780288eed95",
+                            "time": 331.525,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Temporibus autem quibusdam et aut officiis debitis aut rerum.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "5f75c034-3e58-4647-a08f-622c0fe50edf",
+                            "time": 534.44,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "b22b62df-1f28-409d-a07c-c492392eac9f",
+                            "time": 770,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    }
+                  ],
+                  "object": "block",
+                  "type": "unordered-list",
+                  "data": {
+                    "block_key": "highlight_category_what_was_done",
+                    "highlight_notes_list": true
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "text": "Non Recusandae"
+                    }
+                  ],
+                  "type": "header-2",
+                  "data": {
+                    "block_created": "2026-11-16T12:17:01-07:00",
+                    "highlight_notes_title": true,
+                    "block_key": "highlight_category_next_steps_63577f",
+                    "block_updated": "2026-08-12T17:00:35+05:30",
+                    "is_manual_note": true
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Itaque earum rerum hic tenetur a sapiente delectus.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "f87df937-9cee-418d-b30d-f5cf9f717c98",
+                            "time": 189.83,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "7e73d5e0-c205-43fb-a3f8-484d49c320bb",
+                            "time": 263.03,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Asperiores repellat. Hanc ego cum teneam sententiam, quid est cur verear.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "72ca818b-4dcb-49f5-8406-74def61843a0",
+                            "time": 437.2,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Ne ad eam nonumy bonorum, te datur graece scriptorem pro.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "d900ff02-69f8-4cc6-94ac-39b0f040af95",
+                            "time": 728.17,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Solum ceteros quo, graeci melius sit et, vix case prima ad.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "cc80860b-850b-4b4d-8786-1c37dc84c4ec",
+                            "time": 770,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    }
+                  ],
+                  "object": "block",
+                  "type": "unordered-list",
+                  "data": {
+                    "block_key": "highlight_category_next_steps_63577f",
+                    "highlight_notes_list": true
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "text": "No Sit Dicit"
+                    }
+                  ],
+                  "type": "header-2",
+                  "data": {
+                    "block_created": "2026-11-16T12:17:01-07:00",
+                    "highlight_notes_title": true,
+                    "block_key": "highlight_category_blockers"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Veritus, eos ex homero salutandi, vis no partem vivendum. ",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "c394e02c-6837-4b84-a5b5-e82e572840a5",
+                            "time": 189.83,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Vim ad iusto facete, feugiat explicari, eu exerci timeam cum.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "c28e0fcc-c88d-4de9-bc19-b5c3f54f9352",
+                            "time": 263.03,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Et vidit copiosae, sed eu quas iracundia. Has ea choro primis.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "8c014044-27a7-468c-bbb4-6070cb18e334",
+                            "time": 501.58502,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    }
+                  ],
+                  "object": "block",
+                  "type": "unordered-list",
+                  "data": {
+                    "block_key": "highlight_category_blockers",
+                    "highlight_notes_list": true
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "text": "Inermis",
+                      "type": "text"
+                    }
+                  ],
+                  "type": "header-2",
+                  "data": {
+                    "block_created": "2026-09-17T08:19:54-07:00",
+                    "highlight_notes_title": true,
+                    "block_key": "highlight_category_objection"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "text": "Voluptaria"
+                    }
+                  ],
+                  "type": "header-2",
+                  "data": {
+                    "block_created": "2026-11-16T12:17:01-07:00",
+                    "highlight_notes_title": true,
+                    "block_key": "highlight_category_dependencies"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "His. Vix te tation dicunt, an eam causae insolens.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "6ba7bbee-cc2c-4272-ac93-97028d88923d",
+                            "time": 189.83,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Cu sed natum tantas, mel ad graece equidem.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "9c3cf644-fa4a-46dc-b9fb-729abc32a085",
+                            "time": 263.03,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "At per facete periculis. Te usu aeque iudico.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "04bb6845-033b-414a-bf27-4065d221ee54",
+                            "time": 501.58502,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Eum no atqui tollit. Sit te inani definitionem.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "a2c1139d-c529-4024-accf-508f8a60935c",
+                            "time": 609.455,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "text": "Mea ea solum dicunt, sed affer.",
+                              "object": "text",
+                              "marks": []
+                            }
+                          ],
+                          "object": "block",
+                          "type": "transcript",
+                          "data": {
+                            "uuid": "3fd5bc38-5b96-4bdd-b32b-44314a387c9d",
+                            "time": 728.17,
+                            "highlight_note_list_item": true,
+                            "turing_note": true,
+                            "model": "v12"
+                          }
+                        }
+                      ],
+                      "object": "block",
+                      "type": "list-item",
+                      "data": {}
+                    }
+                  ],
+                  "object": "block",
+                  "type": "unordered-list",
+                  "data": {
+                    "block_key": "highlight_category_dependencies",
+                    "highlight_notes_list": true
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "text": "",
+                      "type": "text"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "created": "2026-12-26T06:28:02.296249Z",
+              "modified": "2027-01-06T08:21:10.845263Z"
+            }
+          ]
+        }
+
+    notes_html_example:
+      summary: Notes in HTML format
+      value:
+        {
+          "count": 59,
+          "next": "https://api.avoma.com/v1/notes/?from_date=2026-01-05&output_format=html&page=2&to_date=2026-01-06",
+          "previous": null,
+          "results": [
+            {
+              "data": "<h2>Lorem Ipsum</h2><ul><li><p>Dolor: Sit Amet, Consectetur Adipiscing, Elit Sed, Do Eiusmod, Tempor Incididunt, Ut Labore, Et Dolore, Magna Aliqua, Ut Enim, Ad Minim, Veniam Quis, Nostrud Exercitation, Ullamco Laboris, Nisi Ut, Aliquip Ex, Ea Commodo, Consequat Duis, Aute Irure, Dolor In, Reprehenderit In, Voluptate Velit, Esse Cillum</p></li></ul><h2>Sed Do Eiusmod</h2><br><h2>Tempor Incididunt</h2><h2>Ut Labore</h2><h2>Et Dolore</h2><h2>Magna Aliqua</h2><h2>Ut Enim</h2><h2>Ad Minim</h2>",
+              "created": "2026-01-08T06:12:12.119586Z",
+              "modified": "2026-01-08T06:12:12.575534Z"
+            },
+            {
+              "data": "<h2>Lorem Ipsum</h2><ul><li><p>Dolor: Sit Amet, Consectetur Adipiscing</p></li></ul><h2>Sed Do Eiusmod</h2><ul><li>Tempor incididunt ut labore et dolore magna aliqua.</li><li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</li><li>Nisi ut aliquip ex ea commodo consequat.</li><li>Duis aute irure dolor in reprehenderit in voluptate velit.</li><li>Esse cillum dolore eu fugiat nulla pariatur.</li></ul><br><h2>Excepteur Sint</h2><ul><li><p>Occaecat Cupidatat</p><ul><li>Non proident, sunt in culpa qui officia deserunt</li></ul></li><li><p>Mollit Anim</p><ul><li>Id est laborum et dolorum fuga</li><li>Et harum quidem rerum facilis est et expedita distinctio</li><li>Nam libero tempore, cum soluta nobis est eligendi</li><li>Optio cumque nihil impedit quo minus id quod maxime</li><li>Placeat facere possimus, omnis voluptas assumenda est</li></ul></li></ul><br><h2>Omnis Dolor</h2><ul><li>Repellendus temporibus autem quibusdam et aut officiis.</li></ul><br><h2>Debitis Aut</h2><ul><li>Rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae.</li><li>Non recusandae itaque earum rerum hic tenetur a sapiente delectus.</li><li>Ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</li><li>Hanc ego cum teneam sententiam, quid est cur verear ne ad eam nonumy bonorum.</li><li>Te datur graece scriptorem pro.</li></ul><br><h2>Maluisset Scripserit</h2><ul><li>Graece melius sit et.</li><li>Vix case prima ad.</li><li>No sit dicit veritus.</li></ul><br><h2>Eos Ex</h2><ul><li>Homero salutandi to drive final approval</li></ul><br><h2>Vis No</h2><ul><li>Partem vivendum: vim ad iusto facete feugiat explicari</li><li>Eu exerci timeam cum: et vidit copiosae sed eu quas</li></ul><br><h2>Iracundia Has</h2><ul><li>Ea choro primis et inermis voluptaria his</li><li>Vix te tation dicunt an eam causae insolens</li><li>Cu sed natum tantas mel ad graece equidem</li></ul><br><h2>At Per</h2><ul><li>Facete periculis te usu aeque iudico</li><li>Eum no atqui tollit sit te inani definitionem</li></ul><br><h2>Next Steps</h2><ul><li>Mea ea solum dicunt sed affer (50 Engage, 10 CI)</li><li>Vis no partem vivendum vim ad iusto facete</li><li>Feugiat explicari eu exerci timeam cum</li><li>Et vidit copiosae sed eu quas iracundia</li></ul>",
+              "created": "2026-01-05T23:28:16.205807Z",
+              "modified": "2026-01-05T23:29:42.186821Z"
+            },
+            {
+              "data": "<h2>Lorem Ipsum</h2><ul><li><p>Dolor: Sit Amet, Consectetur Adipiscing, Elit Sed</p></li></ul>",
+              "created": "2026-01-05T21:57:04.346554Z",
+              "modified": "2026-01-05T21:57:04.474411Z"
+            }
+          ]
+        }
+  parameters:
+    pageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        default: 10
+        maximum: 100
+      description: Number of records returned per response.
