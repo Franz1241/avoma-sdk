@@ -7,6 +7,7 @@ import type {
   AvomaFormattedNotes,
   AvomaHttpMethod,
   AvomaMeetingQuery,
+  AvomaMeetingsByEmailQuery,
   AvomaMeetingsQuery,
   AvomaNoteFormat,
   AvomaNotesForMeetingQuery,
@@ -414,6 +415,20 @@ export class AvomaClient {
     getInsights: (meetingUuid: string) =>
       this.get("/v1/meetings/{meeting_uuid}/insights/", { path: { meeting_uuid: meetingUuid } }),
     drop: (uuid: string) => this.post("/v1/meetings/{uuid}/drop/", { path: { uuid } }),
+    /**
+     * Get all meetings where the given email was an attendee (or organizer).
+     * Uses the `attendee_emails` server-side filter — no extra API calls.
+     */
+    getAllAttendedBy: (email: string, query: AvomaMeetingsByEmailQuery) =>
+      this.getAll("/v1/meetings/", { query: { ...query, attendee_emails: email } }),
+    /**
+     * Get all meetings hosted (organized) by the given email.
+     * Pre-filters server-side via `attendee_emails` (organizer is always in attendees),
+     * then filters client-side by `organizer_email` — minimizes API calls.
+     */
+    getAllHostedBy: (email: string, query: AvomaMeetingsByEmailQuery) =>
+      this.getAll("/v1/meetings/", { query: { ...query, attendee_emails: email } })
+        .then(meetings => meetings.filter(m => m.organizer_email === email)),
   };
 
   readonly notes = {
@@ -539,6 +554,14 @@ export class AvomaClient {
 
   getMeeting(uuid: string, query?: AvomaMeetingQuery) {
     return this.meetings.get(uuid, query);
+  }
+
+  getMeetingsHostedBy(email: string, query: AvomaMeetingsByEmailQuery) {
+    return this.meetings.getAllHostedBy(email, query);
+  }
+
+  getMeetingsAttendedBy(email: string, query: AvomaMeetingsByEmailQuery) {
+    return this.meetings.getAllAttendedBy(email, query);
   }
 
   getAllCalls(query: AvomaCallsQuery) {

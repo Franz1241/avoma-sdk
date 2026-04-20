@@ -170,6 +170,7 @@ export type AvomaEngagementSummary = SuccessResponseFor<"/v1/engagement/summary/
 export type AvomaEngagementSummaryQuery = QueryInputFor<"/v1/engagement/summary/", "get">;
 export type AvomaEngagementForUserQuery = QueryInputFor<"/v1/engagement/{user_uuid}/", "get">;
 export type AvomaEngagementSummaryForUserQuery = QueryInputFor<"/v1/engagement/{user_uuid}/summary/", "get">;
+export type AvomaMeetingsByEmailQuery = Omit<AvomaMeetingsQuery, "attendee_emails">;
 
 export type AvomaAiNotesWebhookEvent = RequestBodyFor<"/v1/webhooks/", "post">;
 export type AvomaMeetingBookedWebhookEvent = RequestBodyFor<"/v1/webhooks/meeting_booked_via_scheduler/", "post">;
